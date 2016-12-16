@@ -45,6 +45,8 @@ const Select = React.createClass({
 
 	propTypes: {
 		addLabelText: React.PropTypes.string,       // placeholder displayed when you want to add a label on a multi-value input
+		allowCreate: React.PropTypes.bool,			// whether to allow creation of new entries
+        allowCreateConstraint: React.PropTypes.func,// if present, will have to return true to allow text to be added as value
 		'aria-label': React.PropTypes.string,       // Aria label (for assistive tech)
 		'aria-labelledby': React.PropTypes.string,	// HTML ID of an element that should be used as the label (for assistive tech)
 		arrowRenderer: React.PropTypes.func,				// Create drop-down caret element
@@ -119,6 +121,7 @@ const Select = React.createClass({
 	getDefaultProps () {
 		return {
 			addLabelText: 'Add "{label}"?',
+			allowCreate: false,
 			arrowRenderer: defaultArrowRenderer,
 			autosize: true,
 			backspaceRemoves: true,
@@ -528,7 +531,13 @@ const Select = React.createClass({
 					this.popValue();
 				}
 			return;
-			default: return;
+			default:
+				if (this.props.allowCreate && this.props.multi && event.keyCode === this.props.addItemOnKeyCode) {
+					event.preventDefault();
+					event.stopPropagation();
+					this.selectFocusedOption();
+				}
+				return;
 		}
 		event.preventDefault();
 	},

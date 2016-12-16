@@ -143,9 +143,10 @@ export default class Async extends Component {
 			inputValue = stripDiacritics(inputValue);
 		}
 
-		if (ignoreCase) {
-			inputValue = inputValue.toLowerCase();
-		}
+		// @xarg: Do not force the text to be lower case, but still search in results ignoring case
+		// if (ignoreCase) {
+		// 	inputValue = inputValue.toLowerCase();
+		// }
 
 		if (onInputChange) {
 			onInputChange(inputValue);
